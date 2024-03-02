@@ -117,7 +117,31 @@ count_of_solutions(Result, Predicate, Value):-
 
 start_opt(X):-
 	question1(X1),
-	count_of_solutions(First_result, (type(X, X1)))
+	count_of_solutions(
+		First_result, 
+		race(X, X1),
+		2),
+	(First_result ->(
+		question2(X2),
+		count_of_solutions(
+			Second_result,
+			(race(X,X1), class(X,X2)),
+		2),
+		write(Second_result),
+		(Second_result -> (
+			question3(X3),
+			race(X,X1),
+			class(X,X2),
+			rank(X,X3));
+			(race(X,X1),
+			class(X,X2)));
+			(race(X,X1))).
+			
+			
+			
+			
+start_test_smart:- 	start_opt(X), print(X),fn,fail.		
+			
 
-start:- question1(X1),question2(X2),question3(X3),
-    race(X,X1), class(X,X2), rank(X,X3), write(X).
+/*start:- question1(X1),question2(X2),question3(X3),
+    race(X,X1), class(X,X2), rank(X,X3), write(X).*/

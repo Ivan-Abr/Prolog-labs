@@ -62,12 +62,25 @@ mother(X,Y):- woman(X), parent(X,Y).
 /*Вывод всех матерей*/
 mother(X):- mother(Y,X), print(Y), nl, fail.
 
-/*проверка на брата(X - брат Y)*/
-brother(X,Y):- man(X), mother(Z,X), mother(Z,Y), X \= Y.
-/*вывод всех братьев X*/
-brothers(X):- brother(Y,X), print(Y), nl,fail.
+/*Проверка на деда(X - дед(Y))*/
+grand_pa(X,Y):- man(X), parent(X,Z), parent(Z, Y).
+/*Вывод всех дедов X*/
+grand_pas(X):- grand_pa(Y,X), print(Y), nl, fail.
 
-/*проверка на сиблинга(X - сиблинг Y)*/
+/*Провека на деда и внука*/
+grand_pa_and_son(X,Y):- man(X), man(Y),
+    (parent(X,Z), parent(Z,Y); parent(Y,Z), parent(Z,X)).
+
+/*Проверка на сиблинга(X - сиблинг Y)*/
 b_s(X,Y):- mother(Z,X), mother(Z,Y), X \= Y.
-/*вывод всех сиблингов X*/
+/*Вывод всех сиблингов X*/
 b_s(X):- b_s(Y,X), print(Y), nl,fail.
+
+/*Проверка на дядю(X - дядя Y)*/
+uncle(X,Y):- man(X),parent(Z,Y), b_s(X,Z).
+/*Проверка на дядю без использования предикатов*/
+uncle_n(X,Y):- man(X), parent(Z,Y), parent(W,X), parent(W,Z), X\=Z.
+/*Вывод всех дядь X*/
+uncle(X):-uncle(Y,X), print(Y), nl, fail.
+
+

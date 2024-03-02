@@ -48,38 +48,33 @@ parent(duhovlad,zlatomir).
 parent(zhdana,zdislava).
 parent(zhdana,zlatomir).
 
-/*¬ывод всех мужчин*/
+/*Вывод всех мужчин*/
 men():- man(X), print(X), nl, fail.
 
-/*¬ывод всех женщин*/
+/*Вывод всех женщин*/
 women():- woman(X), print(X), nl, fail.
 
-/*¬ывод всех детей родител€ X*/
+/*Вывод всех детей родител€ X*/
 children(X):- parent(X,Y), print(Y), nl, fail.
 
-/*ѕроверка на мать(X - мать Y)*/
+/*Проверка на мать(X - мать Y)*/
 mother(X,Y):- woman(X), parent(X,Y).
-/*¬ывод всех матерей*/
+/*Вывод всех матерей*/
 mother(X):- mother(Y,X), print(Y), nl, fail.
 
-/*ѕроверка на деда(X - дед(Y))*/
-grand_pa(X,Y):- man(X), parent(X,Z), parent(Z, Y).
-/*¬ывод всех дедов X*/
-grand_pas(X):- grand_pa(Y,X), print(Y), nl, fail.
+/*проверка на брата(X - брат Y)*/
+brother(X,Y):- man(X), mother(Z,X), mother(Z,Y), X \= Y.
+/*проверка на брата с использованием предиката parent*/
+p_brother(X,Y):-man(X), parent(Z,X), parent(Z,Y), X\=Y.
 
-/*ѕровека на деда и внука*/
-grand_pa_and_son(X,Y):- man(X), man(Y),
-    (parent(X,Z), parent(Z,Y); parent(Y,Z), parent(Z,X)).
+/*вывод всех братьев X*/
+brothers(X):- brother(Y,X), print(Y), nl,fail.
 
-/*ѕроверка на сиблинга(X - сиблинг Y)*/
+/*проверка на сиблинга(X - сиблинг Y)*/
 b_s(X,Y):- mother(Z,X), mother(Z,Y), X \= Y.
-/*¬ывод всех сиблингов X*/
+
+/*проверка на сиблинга с использованием предиката parent*/
+p_b_s(X,Y):-parent(Z,X),parent(Z,Y), X \= Y.
+
+/*вывод всех сиблингов X*/
 b_s(X):- b_s(Y,X), print(Y), nl,fail.
-
-
-uncle(X,Y):- man(X),parent(Z,Y), b_s(X,Z).
-uncle_n(X,Y):- man(X), parent(Z,Y), parent(W,X), parent(W,Z), X\=Z.
-
-uncle(X):-uncle(Y,X), print(Y), nl, fail.
-
-
