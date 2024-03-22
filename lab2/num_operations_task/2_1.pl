@@ -48,6 +48,8 @@ sum_digits_down(N, Acc, Sum) :-
     sum_digits_down(N1, Acc1, Sum).
 
 
+is_square_free(N) :- 
+	\+ (between(2, N, X), X * X =:= N).
 	
 
 
