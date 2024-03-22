@@ -26,31 +26,31 @@ race(bjorn,2).
 race(kabal,2).
 
 /*По классу*/
-class(thorkell,1).
-class(askhelad,1).
-class(baldur,1).
-class(heila,2).
-class(legolas,2).
-class(robin,2).
-class(lars,4).
-class(michael,4).
-class(arthas,3).
-class(jorin,3).
-class(archemides,5).
-class(heizenberg,5).
-class(gazmanov,5).
-class(thaul,5).
-class(zulabar,5).
-class(morn,3).
-class(radagon,3).
-class(thog,1).
-class(grok,1).
-class(crack,1).
-class(barn,2).
-class(djubei,2).
-class(stichs,2).
-class(bjorn,4).
-class(kabal,4).
+profession(thorkell,1).
+profession(askhelad,1).
+profession(baldur,1).
+profession(heila,2).
+profession(legolas,2).
+profession(robin,2).
+profession(lars,4).
+profession(michael,4).
+profession(arthas,3).
+profession(jorin,3).
+profession(archemides,5).
+profession(heizenberg,5).
+profession(gazmanov,5).
+profession(thaul,5).
+profession(zulabar,5).
+profession(morn,3).
+profession(radagon,3).
+profession(thog,1).
+profession(grok,1).
+profession(crack,1).
+profession(barn,2).
+profession(djubei,2).
+profession(stichs,2).
+profession(bjorn,4).
+profession(kabal,4).
 
 /*По званию*/
 rank(thorkell,2).
@@ -87,7 +87,7 @@ question1(X1):- write("What race is the character?"), nl,
     write("4. Goblin"),nl,
     read(X1).
 
-question2(X2):- write("What class is the character?"), nl,
+question2(X2):- write("What profession is the character?"), nl,
      write("1. Warrior"),nl,
       write("2. Archer"),nl,
        write("3. Paladin"),nl,
@@ -103,45 +103,47 @@ question3(X3):- write("What rank has the character?"), nl,
         read(X3).
 
 
-length_list(Count, Predicate):-
-	findall(X, call(Predicate), List),
-	length(List, Count).
+to_boolean(Result, Boolean):-
+((Result = (=); Result = (>)) -> Boolean = true; Boolean = false).
 
-boolean(Result, Boolean):-
-	((Result = (=); Result = (>)) -> Boolean = true; Boolean = false).
+length_predicate(Count, Predicate):- 
+				findall(X, call(Predicate), List),
+				length(List, Count).
+
 
 count_of_solutions(Result, Predicate, Value):-
-	length_list(Count, call(Predicate)),
+	length_predicate(Count, call(Predicate)),
 	compare(Compare_result, Count, Value),
-	boolean(Compare_result, Result).
+	to_boolean(Compare_result, Result).
 
-start_opt(X):-
+
+
+smart_test(X):-
 	question1(X1),
 	count_of_solutions(
-		First_result, 
-		race(X, X1),
-		2),
-	(First_result ->(
+		First_result,
+		race(X,X1),
+		2
+	),
+	(First_result -> (
 		question2(X2),
 		count_of_solutions(
 			Second_result,
-			(race(X,X1), class(X,X2)),
-		2),
+			(race(X,X1), profession(X,X2)),
+			2
+		),
 		write(Second_result),
 		(Second_result -> (
 			question3(X3),
 			race(X,X1),
-			class(X,X2),
-			rank(X,X3));
-			(race(X,X1),
-			class(X,X2)));
-			(race(X,X1))).
-			
-			
-			
-			
-start_test_smart:- 	start_opt(X), print(X),fn,fail.		
-			
+			profession(X,X2),
+			rank(X,X3)
+		);(
+			race(X,X1),
+			profession(X,X2)
+		))
+	);(
+		race(X,X1)
+	)).
 
-/*start:- question1(X1),question2(X2),question3(X3),
-    race(X,X1), class(X,X2), rank(X,X3), write(X).*/
+start_test:- smart_test(X),nl,print(X),nl,fail.
