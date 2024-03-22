@@ -26,11 +26,28 @@ fact_down(N, Acc, X) :-
 	
 %Сумма цифр, рекурсия вверх%
 sum_digits_up(N, Sum) :- sum_digits_up(N, 0, Sum).
+
 sum_digits_up(0, Acc, Acc).
-sum_digits_up(N, Acc, Sum) :- 
-	N > 0,
-	Digit is N mod 10,
-	N1 is N // 10,
+sum_digits_up(N, Acc, Sum) :-
+    N > 0,
+    Digit is N mod 10,
+    N1 is N // 10,
+    Acc1 is Acc + Digit,
+    sum_digits_up(N1, Acc1, Sum).
+
+	
+%Сумма цифр, рекурсия вниз%
+sum_digits_down(N, Sum) :- sum_digits_down(N, 0, Sum).
+
+sum_digits_down(0, Acc, Acc).
+sum_digits_down(N, Acc, Sum) :-
+    N > 0,
+    Digit is N mod 10,
+    N1 is N // 10,
+    Acc1 is Acc + Digit,
+    sum_digits_down(N1, Acc1, Sum).
+
+
 	
 
 
